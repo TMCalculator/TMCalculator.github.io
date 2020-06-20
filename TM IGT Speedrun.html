@@ -1,0 +1,72 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title>Calculating In-Game Time in Browser for Speedrun.com runs</title>
+<link rel="stylesheet" type="text/css" href="TM IGT Speedrun.css">
+</head>
+<body style="background-color:#102030;"> <!-- ff00ff -->
+<noscript>You need to enable JavaScript to run this app.</noscript>
+
+<div class="wrapper">
+<div>This is WorkInProgress version. Early Release</div>
+<div id="calculatorMode">
+<form name="calculatorModeForm"><STRONG>Choose calculator mode...</STRONG>
+<INPUT TYPE="radio" NAME="calcMode" VALUE="separate" checked="checked">I have times separated with character
+<INPUT TYPE="radio" NAME="calcMode" VALUE="realtime">I want to insert times manually
+</form>
+</div>
+<!-- <br> -->
+<div id="gametype">
+<STRONG>Pick The Game - TrackMania...</STRONG>
+<form name="gameTypeForm">
+<INPUT TYPE="radio" NAME="gametype" VALUE="tmr">Ⓡ
+<INPUT TYPE="radio" NAME="gametype" VALUE="turbo">Turbo
+<INPUT TYPE="radio" NAME="gametype" VALUE="wii">Wii
+<INPUT TYPE="radio" NAME="gametype" VALUE="turbods">Turbo: Build to Race
+<INPUT TYPE="radio" NAME="gametype" VALUE="ds">DS
+<INPUT TYPE="radio" NAME="gametype" VALUE="tmuf">United Forever
+<INPUT TYPE="radio" NAME="gametype" VALUE="tmu">United
+<INPUT TYPE="radio" NAME="gametype" VALUE="tmnf">Nations Forever
+<INPUT TYPE="radio" NAME="gametype" VALUE="tmn">Nations ESWC
+<INPUT TYPE="radio" NAME="gametype" VALUE="tmse">Sunrise eXtreme
+<INPUT TYPE="radio" NAME="gametype" VALUE="tmo">Original
+<INPUT TYPE="radio" NAME="gametype" VALUE="other">Non-Speedrun (Custom Tracklist)
+</form>
+</div>
+<div id="category"><STRONG>Select Speedrun Category...</STRONG> This affects campaigns you will see to choose... (pick game first)</div>
+<div id="campaign"><STRONG>Select Subcategory (Campaign)</STRONG> (pick main category first)</div>
+
+<div id="dataFormat">
+<STRONG>Select Formatting of your data (x = hundredths of seconds) </STRONG>
+<form name="formatTypeForm">
+<INPUT TYPE="radio" NAME="format" VALUE="plainNum" checked="checked">hhmmssxx
+<INPUT TYPE="radio" NAME="format" VALUE="ms">xxxxx
+<INPUT TYPE="radio" NAME="format" VALUE="secOnly">sss.xx
+<INPUT TYPE="radio" NAME="format" VALUE="full">hh:mm:ss.xxx
+</form>
+</div>
+
+<div id="separateMode" style="display: none;">
+<label for="separator">Write your separator of times here (default: comma):</label>
+<input style="width:50px; height:25px;" type="text" color="black" id="separator" name="separator" placeholder="," size="1" maxlength="4">
+
+<form name="timeZoneForm">
+<label for="timesList">Paste your times below:</label><br>
+<textarea id="timeZone" name="timeTextZone" rows="3" cols="100" placeholder="Paste your time here before clicking on button to Calculate... For example: xxxxx,xxxxx,xxxxx,xxxxx">
+</textarea>
+</form>
+</div>
+<br>
+<!--- <p>Click the "Calculate" button to count.</p> -->
+<input id="Cbutton" type="button" class="button" value="Calculate" onclick="Calculation()"><input id="tableDrawButton" type="button" class="button" value="DrawTable" onclick="drawTable()" style="visibility:hidden; background:green">
+<br>
+<div id="totalText">Here is total time: <div id="totalTime" style="display:inline;"></div></div>
+<div id="fillMe">
+</div>
+
+</div> <!-- wrapperDiv -->
+
+<script src="TM IGT Speedrun.js">
+</script>
+</body>
+</html>

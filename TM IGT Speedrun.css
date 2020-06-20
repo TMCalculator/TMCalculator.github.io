@@ -1,0 +1,58 @@
+html *
+{
+   font-size: 1em !important;
+   color: #fff !important;
+   font-family: Arial !important;
+}
+
+body
+{
+	margin: 0px;
+    padding: 0px;
+	background-color:#102030;
+	height : 100%;
+}
+
+td{
+	text-align: right;
+}
+
+.wrapper{
+	width: 100%;
+	height: 100%;
+}
+
+.row{
+	height: 50%;
+	float: center;
+}
+
+.column{
+	width: 33%;
+	float: left;
+}
+
+input[type=text] {
+  background-color: #241d1d;
+}
+
+input[type=radio] {
+  margin : 12px;
+}
+
+textarea {
+  background-color: #241d1d;
+}
+
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
