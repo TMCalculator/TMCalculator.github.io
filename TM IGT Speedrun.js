@@ -79,20 +79,6 @@ function radioSubCampaign(){
 	//drawTable(subCampForm[i].value);	
 }
 
-function toggleMode(input){
-	if ( input === true ){
-		document.querySelector('#tableDrawButton').style.visibility = "";
-		document.querySelector('#Cbutton').style.visibility = "hidden";
-		document.querySelector('#Cbutton').style.float = "right";
-	}
-	else if ( input === false ){
-		document.querySelector('#tableDrawButton').style.visibility = "hidden";
-		document.querySelector('#Cbutton').style.visibility = "";
-		document.querySelector('#Cbutton').style.float = "left";
-	}
-	else { console.log("Wrong input in toggleMode function"); }
-}
-
 var inputs = document.querySelectorAll('input');
 function attachListener(){
 	inputs = document.querySelectorAll('input');
@@ -100,15 +86,6 @@ function attachListener(){
 	{
 		if ( inputs[i].evented !== true )
 		{
-			if ( inputs[i].value === "realtime" )
-			{
-				inputs[i].addEventListener('change', function(){ toggleMode(true) });
-			}
-			else if ( inputs[i].value === "separate" )
-			{
-				inputs[i].addEventListener('change', function(){ toggleMode(false) });
-			}
-				
 			if ( inputs[i].name !== "format" ) 
 			{
 				inputs[i].addEventListener('change', function(){ radioBasicAll() });
