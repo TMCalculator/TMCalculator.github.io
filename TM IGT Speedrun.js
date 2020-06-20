@@ -178,7 +178,6 @@ document.querySelector('#separateMode').style.display = "none"; //Hide the textA
 
 if ( document.querySelector('#calculatorMode > form:nth-child(1) > input:nth-child(2)').checked === true ) { toggleTextBox("on") }
 document.querySelector('#calculatorMode > form:nth-child(1) > input:nth-child(2)').addEventListener('click', function(){ toggleTextBox("on") });
-document.querySelector('#calculatorMode > form:nth-child(1) > input:nth-child(3)').addEventListener('click', function(){ toggleTextBox("off") });
 
 function campaigns(type){ //type = gameType
 	if ( type === "tmr" ) { campList = ["2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"] }
