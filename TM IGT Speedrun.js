@@ -79,6 +79,20 @@ function radioSubCampaign(){
 	//drawTable(subCampForm[i].value);	
 }
 
+function toggleMode(input){
+	if ( input === true ){
+		document.querySelector('#tableDrawButton').style.visibility = "";
+		document.querySelector('#Cbutton').style.visibility = "hidden";
+		document.querySelector('#Cbutton').style.float = "right";
+	}
+	else if ( input === false ){
+		document.querySelector('#tableDrawButton').style.visibility = "hidden";
+		document.querySelector('#Cbutton').style.visibility = "";
+		document.querySelector('#Cbutton').style.float = "left";
+	}
+	else { console.log("Wrong input in toggleMode function"); }
+}
+
 var inputs = document.querySelectorAll('input');
 function attachListener(){
 	inputs = document.querySelectorAll('input');
@@ -86,6 +100,15 @@ function attachListener(){
 	{
 		if ( inputs[i].evented !== true )
 		{
+			if ( inputs[i].value === "realtime" )
+			{
+				inputs[i].addEventListener('change', function(){ toggleMode(true) });
+			}
+			else if ( inputs[i].value === "separate" )
+			{
+				inputs[i].addEventListener('change', function(){ toggleMode(false) });
+			}
+				
 			if ( inputs[i].name !== "format" ) 
 			{
 				inputs[i].addEventListener('change', function(){ radioBasicAll() });
@@ -178,6 +201,7 @@ document.querySelector('#separateMode').style.display = "none"; //Hide the textA
 
 if ( document.querySelector('#calculatorMode > form:nth-child(1) > input:nth-child(2)').checked === true ) { toggleTextBox("on") }
 document.querySelector('#calculatorMode > form:nth-child(1) > input:nth-child(2)').addEventListener('click', function(){ toggleTextBox("on") });
+document.querySelector('#calculatorMode > form:nth-child(1) > input:nth-child(3)').addEventListener('click', function(){ toggleTextBox("off") });
 
 function campaigns(type){ //type = gameType
 	if ( type === "tmr" ) { campList = ["2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"] }
@@ -828,8 +852,8 @@ function campaignDraw(type){
 	if ( campList[0] === true ) {
 		html = '<STRONG>No Speedrun Category...</STRONG>'
 	}
-	document.querySelector('#category').innerHTML = html;
-	var ref = document.querySelector('#category').children[2]; //Form part of DIV
+	document.querySelector('#campaign').innerHTML = html;
+	var ref = document.querySelector('#campaign').children[2]; //Form part of DIV
 	for ( let j = 0; j < ref.length; j++ )
 	{
 		ref[j].addEventListener('change', function(){ radioCampaign() });
@@ -850,11 +874,11 @@ function subCampaignDraw(type){
 	if ( subCampList[0] === true ) {
 		html = '<STRONG>No Speedrun Subcategory...</STRONG>'
 	}
-	document.querySelector('#campaign').innerHTML = html;
-	var ref = document.querySelector('#campaign').children.length
+	document.querySelector('#subcampaign').innerHTML = html;
+	var ref = document.querySelector('#subcampaign').children.length
 	if ( ref > 1 )
 	{
-		reffy = document.querySelector('#campaign').children[1]	  //Form part of DIV
+		reffy = document.querySelector('#subcampaign').children[1]	  //Form part of DIV
 		for ( let j = 0; j < reffy.length; j++ )
 		{
 			reffy[j].addEventListener('change', function(){ radioSubCampaign() });
@@ -865,8 +889,16 @@ function subCampaignDraw(type){
 
 function formatChange(string){
 	if ( !isNaN(string) === true ) { string = string.toString() } //if data is number, convert to String...
+	
+	if ( hasNumber(string) === false ) {
+		alert("Are you sure you put correct times?");
+	}
+	
+	if ( string.length > 12 ) {
+		alert("Did you forget about separator? Or made mistake there?");
+	}
 
-	if ( formatTypeForm[1].checked === true ) //xxxxx
+	if ( formatTypeForm[3].checked === true ) //xxxxx
 	{
 		var sl = string.length;
 		var ld = pint(string.substring(s-1,s)) //Last Digit
@@ -874,14 +906,45 @@ function formatChange(string){
 		//no need for change...
 		return string
 	}
-		
+	
+	else if ( formatTypeForm[2].checked === true ) //hh[h]mm'ss"xx 
+	{
+		var s = string.length;
+		var x1 = string.split("\"");
+		var xx = x1[1];
+		var s1 = x1[0].split("'");
+		var ss = s1[1] || x1[0]; //if value exists it takes from another split, if not, read from first split (aka only ss and xx)
+		var m1 = s1[0];
+		var mm = 0;
+		var hh = 0;
+		if ( m1.indexOf('h') > -1 || s > 11 )
+		{
+			var h1 = m1.split('h');
+			mm = h1[1];
+			hh = h1[0];
+		}
+		else if ( s > 3 && s <= 5 )
+		{
+			/* do nothing */
+		}
+		else 
+		{
+			mm = s1[0];
+			hh = 0;
+		}
+		var tm = pint(hh)*60+pint(mm); 
+		var ts = pint(tm)*60+pint(ss);
+		var tx = pint(ts)*100+pint(xx);
+		return tx;
+	}
+	
 	else if ( formatTypeForm[0].checked === true ) //hhmmssxx
 	{
 		var s = string.length; //e.g. 5-9
 		var xx = pint(string.substring(s-2, s));
 		var ss = pint(string.substring(s-4, s-2));
 		var mm = 0;
-		if ( s > 4 && s < 6 ) {
+		if ( s > 4 && s <= 6 ) {
 			mm = pint(string.substring(0, s-4));
 		}
 		var hh = 0;
@@ -897,7 +960,7 @@ function formatChange(string){
 		var tx = ts*100+xx;
 		return tx;
 	}
-	else if ( formatTypeForm[2].checked === true ) //sss.xx
+	else if ( formatTypeForm[4].checked === true ) //sss.xx
 	{
 		var s = string.split('.'); //split data with dot.
         var xt = s[1]; //xxxx
@@ -908,7 +971,7 @@ function formatChange(string){
 		var tx = ss*100+xx;
 		return tx;		
 	}
-	else if ( formatTypeForm[3].checked === true )	// hh:mm:ss.xxx
+	else if ( formatTypeForm[1].checked === true )	// hh:mm:ss.xxx
 	{
 		var stringi = string.split(":"); //[ "hh", "mm", "ss.xxx" ]
 		var SL = stringi.length-1;
@@ -918,6 +981,7 @@ function formatChange(string){
         var xx = pint(xt.substring(0, 2)); //xx (get only two numbers after dot)
 		var ss = pint(strings[0]);
 		var hh, mm;
+		console.log(SL);
 		if ( SL === 2 )
 		{
 			mm = pint(stringi[1]);
@@ -956,7 +1020,7 @@ function formatReverse(time, mode){
 	var fx = time3 % s2ms
 	
 	var formatting = '';
-	if ( fh > 0 )
+	if ( fh > 0 || mode === "full" )
 	{
 		if ( fh.toString().length === 1 ) { fh = "0"+fh }
 		if ( fm.toString().length === 1 ) { fm = "0"+fm }
@@ -1001,7 +1065,39 @@ function formatReverse(time, mode){
 
 function tracklist2Array(address){ result = address.split(','); return result }
 
+function hasNumber(myString) {
+	return /\d/.test(myString);
+}
+
+function separatorCheck(){
+	var sep2Check = global["separator"];
+	if ( document.querySelector('#separator').value === "" ) { global["separator"] = "," }
+
+	if ( hasNumber(sep2Check) === true )
+	{
+		alert("Don't use digit in separator!");
+	}
+	
+	if ( sep2Check.indexOf(":") > -1 || sep2Check.indexOf(".") > -1 || sep2Check.indexOf("'") > -1 || sep2Check.indexOf('"') > -1 )
+	{
+		st2 = '"';
+		alertString = "Don't use colons (:), dots (.), single or double quotation marks (' or "+st2+") as separator sign!"
+		alert(alertString);
+	}
+}
+
+function clipboard(){
+	//var copyText = document.getElementById("clipboardZone");
+	var copyText = document.querySelector("#clipboardZone");
+	copyText.select();
+	copyText.setSelectionRange(0, 999999); /*For mobile devices*/
+	document.execCommand("copy");
+}
+
 function Calculation(){
+	saveInputs(); //Puts stuff into memory...
+	separatorCheck();
+	
 	var subCatExist = document.querySelector('#campaign').children.length
 	if ( global.CampaignType === undefined ) { alert("You did not choose category!") }
 	if ( global.SubCampaignType === undefined && subCatExist === 2 ) { alert("You did not choose subcategory!") }
@@ -1010,6 +1106,7 @@ function Calculation(){
 	if ( subCatExist === 2 ) {
 		global["SubType"] = subType(global.SubCampaignType);
 	}
+	
 	var TLraw;
 	if ( subCatExist === 2 ) {
 		TLraw = trackList[global.gameType][global["CamType"]][global["SubType"]]; //unformatted tracklist
@@ -1025,10 +1122,9 @@ function Calculation(){
 	}
 	var TL = TLraw.split(',');
 
-	var labels = ["Track", "Time (raw)", "Time (ms)", "Time (IGTF)", "Time (SF)", "SummedTime"]
-
-	if ( document.querySelector('#separator').value === "" ) { global["separator"] = "," }
+	var labels = ["Track", "Time (raw)", "Time (ms)", "Time (IGTF)", "Sum of Time"]
 	var rawTimeValues = document.querySelector('#timeZone').value.split(global.separator);
+	document.querySelector('#clipboardDiv').style.visibility = "";
 	/*
 	rawTimeValues
 	if ( global.timeZone === undefined )
@@ -1040,14 +1136,18 @@ function Calculation(){
 	}
 	*/
 	var timeValues = [];
-	
-	//var array2Print = [ [],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[] ];
 	var array2Print = [];
+	//var pass2Clipboard = "Sum_Of_Time,       Track_Time,        Track_Name \n";
+	var pass2Clipboard = "Added_Sum_of_Times,Current_Track_Time,Track_Name\n"
 
 	var sumOfTime = 0;
 	var leng = rawTimeValues.length;
 	//var lengMinusTrackList = leng-TL.length;
-	// if ( leng === TL.length ) //is okay, number of given times 
+	// if ( leng === TL.length ) //is okay, number of given times
+	
+	if ( leng < TL ) {
+		alert("You did not gave enough times, to fill all data to chosen campaign.") 
+	}
 	
 	var j = 1;
 	for ( let i = 0; i < leng; i++ )
@@ -1063,8 +1163,11 @@ function Calculation(){
 			array2Print[i][1] = rawTimeValues[i]; //tracktime... raw
 			array2Print[i][2] = timeValues[i]+"0"; //tracktime...milliseconds
 			array2Print[i][3] = formatReverse(timeValues[i], "igt"); //display data in standard format
-			array2Print[i][4] = formatReverse(timeValues[i]); //display data in standard format
-			array2Print[i][5] = formatReverse(sumOfTime); //tracktime summed up
+			//array2Print[i][5] = formatReverse(timeValues[i]); //display data in standard format
+			array2Print[i][4] = formatReverse(sumOfTime); //tracktime summed up
+			
+			pass2Clipboard += array2Print[i][4]+","+formatReverse(timeValues[i], "full")+","+array2Print[i][0]+'\n';
+			console.log(pass2Clipboard)
 			
 			if ( i >= TL.length ) {
 				array2Print[i][0] = "Penalty "+j; //trackname
@@ -1079,6 +1182,9 @@ function Calculation(){
 	document.querySelector('#totalTime').innerText = sumFormatted;
 	createTable(array2Print);
 	
+	
+	document.querySelector('#clipboardZone').value = pass2Clipboard;
+	
 	var pageHigh = document.body.scrollHeight; //read how big (high) page is
 	document.querySelector('body').style.height = pageHigh; //to apply color for whole height of page...
 }
@@ -1087,7 +1193,62 @@ function drawTable(){
 	
 }
 
+function saveInputs(){
+	var lastEntryTimes = document.querySelector('#timeZone').value
+	localStorage.setItem('lastTimes', lastEntryTimes)
+	var separator = document.querySelector('#separator').value
+	localStorage.setItem('separator', separator)
+	
+	forms = window.document["forms"];
+	function saveForm(formName){
+		var form2Change = document.forms.namedItem(formName);
+		var fL = form2Change.length;
+		for ( let i = 0; i < fL; i++)
+		{
+			var formNameC = form2Change[i].name; //formName
+			var optionName = form2Change[i].value; // tmr / tmturbo, and so on...
+			var state = form2Change[i].checked; //true or false
+			if ( state === true ) 
+			{
+				localStorage.removeItem(formName); //Saves data to local memory.
+				localStorage.setItem(formName, optionName); //Saves data to local memory.
+			}
+		}
+	}
+	saveForm("gameTypeForm");
+	saveForm("categoryTypeForm");
+	saveForm("formatTypeForm");
+	saveForm("subcategoryTypeForm");
+	saveForm("timeZoneForm");
+}
 
+(function restoreInputs(){
+	document.querySelector('#timeZone').value = localStorage.getItem('lastTimes')
+	document.querySelector('#separator').value = localStorage.getItem('separator')
+	global["separator"] = localStorage.getItem('separator');
+	inputs = document.querySelectorAll('input');
+	
+	var LSlength = Object.keys(localStorage).length
+	function loadForm(formName){
+		var form2Change = document.forms.namedItem(formName);
+		var fL = form2Change.length;
+		var read = localStorage.getItem(formName);
+		
+		for ( let i = 0; i < fL; i++)
+		{
+			if ( form2Change[i].value === read )
+			{
+				//form2Change[i].checked = true;
+				form2Change[i].click();
+			}
+		}
+	}
+	loadForm("gameTypeForm");
+	loadForm("categoryTypeForm");
+	loadForm("formatTypeForm");
+	loadForm("subcategoryTypeForm");
+	loadForm("timeZoneForm");
+})();
 
 //document.querySelector('#Cbutton')
 

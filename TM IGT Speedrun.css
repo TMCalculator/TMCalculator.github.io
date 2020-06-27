@@ -1,6 +1,5 @@
 html *
 {
-   font-size: 1em !important;
    color: #fff !important;
    font-family: Arial !important;
 }
@@ -55,4 +54,10 @@ textarea {
   font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  font-size: 0.75em;
 }

@@ -7,13 +7,24 @@
 <body style="background-color:#102030;"> <!-- ff00ff -->
 <noscript>You need to enable JavaScript to run this app.</noscript>
 
-<div class="wrapper">
-<div>This is Early Release. It's functional, but does not have all features I wanted.</div>
-<!-- <p>This is Early Release. It's functional, but does not have all features I wanted.</p> -->
+<div class="wrapper"><!-- EnterForcedInHTML is &#013; -->
+<div>This is Early Release version: 0.3.2 <p id="changelogtooltip" class="tooltip" title="0.3.2 version:
+✓ Site remembers your choices now (after clicking Calculate).
+✓ It checks your separator (does not block output).
+✓ Now you can copy to clipboard with distancing (preserving the formatting).
+✓ Fixed problem with one format.
+✓ Added new format support.
+✓ Moved page to new address.
+
+Future plans:
+✗ Option of 'I want to insert times manually' is not yet implemented.
+✗ Option for custom tracklists is not yet implemented.
+✗ More graphical display of webpage and separating titles for subpages (faster access).
+"> (hover here for last changes)</p></div>
 <div id="calculatorMode">
 <form name="calculatorModeForm"><STRONG>Choose calculator mode...</STRONG>
 <INPUT TYPE="radio" NAME="calcMode" VALUE="separate" checked="checked">I have times separated with character
-<!--<INPUT TYPE="radio" NAME="calcMode" VALUE="realtime" style="visibility:hidden;">I want to insert times manually-->
+<INPUT TYPE="radio" NAME="calcMode" VALUE="realtime">I want to insert times manually
 </form>
 </div>
 <!-- <br> -->
@@ -34,22 +45,27 @@
 <INPUT TYPE="radio" NAME="gametype" VALUE="other">Non-Speedrun (Custom Tracklist)
 </form>
 </div>
-<div id="category"><STRONG>Select Speedrun Category...</STRONG> This affects campaigns you will see to choose... (pick game first)</div>
-<div id="campaign"><STRONG>Select Subcategory (Campaign)</STRONG> (pick main category first)</div>
+<div id="campaign"><STRONG>Select Speedrun Category...</STRONG> This affects campaigns you will see to choose... (pick game first)</div>
+<div id="subcampaign"><STRONG>Select Subcategory (Campaign)</STRONG> (pick main category first)</div>
 
 <div id="dataFormat">
 <STRONG>Select Formatting of your data (x = hundredths of seconds) </STRONG>
 <form name="formatTypeForm">
 <INPUT TYPE="radio" NAME="format" VALUE="plainNum" checked="checked">hhmmssxx
-<INPUT TYPE="radio" NAME="format" VALUE="ms">xxxxx
-<INPUT TYPE="radio" NAME="format" VALUE="secOnly">sss.xx
 <INPUT TYPE="radio" NAME="format" VALUE="full">hh:mm:ss.xx
+<INPUT TYPE="radio" NAME="format" VALUE="usa">hh<b>h</b>mm'ss"xx
+<INPUT TYPE="radio" NAME="format" VALUE="ms">xxxxxx
+<INPUT TYPE="radio" NAME="format" VALUE="secOnly">ssss.xx
+<!--
+<INPUT TYPE="radio" NAME="format" VALUE="ms">xxxxxx
+<INPUT TYPE="radio" NAME="format" VALUE="secOnly">ssss.xx
+-->
 </form>
 </div>
 
 <div id="separateMode" style="display: none;">
 <label for="separator">Write your separator of times here (default: comma):</label>
-<input style="width:50px; height:25px;" type="text" color="black" id="separator" name="separator" placeholder="," size="1" maxlength="4">
+<textarea style="width:50px; height:25px;resize:none;" type="text" color="black" id="separator" name="separator" placeholder="," size="1" maxlength="4"></textarea>
 
 <form name="timeZoneForm">
 <label for="timesList">Paste your times below:</label><br>
@@ -59,14 +75,14 @@
 </div>
 <br>
 <!--- <p>Click the "Calculate" button to count.</p> -->
-<input id="Cbutton" type="button" class="button" value="Calculate" onclick="Calculation()"><input id="tableDrawButton" type="button" class="button" value="DrawTable" onclick="drawTable()" style="visibility:hidden; background:green">
+<input id="Cbutton" type="button" class="button" style="background:green;" value="Calculate" onclick="Calculation()"><input id="tableDrawButton" type="button" class="button" value="DrawTable" onclick="drawTable()" style="visibility:hidden;"><input id="clipboardDiv" type="button" class="button" value="Copy to Clipboard" onclick="clipboard()" style="visibility:hidden;">
 <br>
 <div id="totalText">Here is total time: <div id="totalTime" style="display:inline;"></div></div>
 <div id="fillMe">
 </div>
 
 </div> <!-- wrapperDiv -->
-
+<textarea value="Clipboard dummy text" id="clipboardZone" style="position:fixed;left:-100%;"></textarea>
 <script src="TM IGT Speedrun.js">
 </script>
 </body>
