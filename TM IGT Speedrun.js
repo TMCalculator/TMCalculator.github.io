@@ -1095,7 +1095,8 @@ function clipboard(){
 }
 
 function Calculation(){
-	saveInputs(); //Puts stuff into memory...
+	var subCatExisting = document.querySelector('#subcampaign').children.length
+	saveInputs(subCatExisting); //Puts stuff into memory...
 	separatorCheck();
 	
 	var subCatExist = document.querySelector('#campaign').children.length
@@ -1166,8 +1167,8 @@ function Calculation(){
 			//array2Print[i][5] = formatReverse(timeValues[i]); //display data in standard format
 			array2Print[i][4] = formatReverse(sumOfTime); //tracktime summed up
 			
-			pass2Clipboard += array2Print[i][4]+","+formatReverse(timeValues[i], "full")+","+array2Print[i][0]+'\n';
-			console.log(pass2Clipboard)
+			pass2Clipboard += formatReverse(sumOfTime, "full")+","+formatReverse(timeValues[i], "full")+","+array2Print[i][0]+'\n';
+			//console.log(pass2Clipboard)
 			
 			if ( i >= TL.length ) {
 				array2Print[i][0] = "Penalty "+j; //trackname
@@ -1193,7 +1194,7 @@ function drawTable(){
 	
 }
 
-function saveInputs(){
+function saveInputs(subcat){
 	var lastEntryTimes = document.querySelector('#timeZone').value
 	localStorage.setItem('lastTimes', lastEntryTimes)
 	var separator = document.querySelector('#separator').value
@@ -1218,7 +1219,7 @@ function saveInputs(){
 	saveForm("gameTypeForm");
 	saveForm("categoryTypeForm");
 	saveForm("formatTypeForm");
-	saveForm("subcategoryTypeForm");
+	if ( subcat === 2 ) { saveForm("subcategoryTypeForm"); }
 	saveForm("timeZoneForm");
 }
 
