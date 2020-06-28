@@ -1155,7 +1155,19 @@ function clipboard(){
 	document.execCommand("copy");
 }
 
+//Prevent double clicking on calculation button...
+var clicked = false;
 function Calculation(){
+	if ( clicked === true ) { console.log("Preventing double click...") }
+	else {
+		Calculations();
+		clicked = true;
+		setTimeout(() => { clicked = false; }, 2000); //after 2 seconds release the block...
+	}
+}
+
+function Calculations(){
+	
 	var subCatExisting = document.querySelector('#subcampaign').children.length
 	saveInputs(subCatExisting); //Puts stuff into memory...
 	separatorCheck();
