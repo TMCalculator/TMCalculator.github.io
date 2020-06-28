@@ -946,7 +946,7 @@ function formatChange(string){
 		}
 		var tm = pint(hh)*60+pint(mm); 
 		var ts = pint(tm)*60+pint(ss);
-		var tx = pint(ts)*100+pint(xx);
+		var tx = ( global.gameType === "tmr") ? pint(ts)*1000+pint(xx) : pint(ts)*100+pint(xx);
 		return tx;
 	}
 	
@@ -968,8 +968,11 @@ function formatChange(string){
 		}
 		
 		else { //to get 3 digits for newest title (TM2020)
-			var xx = pint(string.substring(s-3, s));
-			var ss = pint(string.substring(s-5, s-3));
+			var xx = pint(string.substring(s-3));
+			var ss = 0;
+			if ( s > 3 ) {
+				ss = pint(string.substring(s-5, s-3));
+			}
 			var mm = 0;
 			if ( s > 5 && s <= 7 ) {
 				mm = pint(string.substring(0, s-5));
@@ -984,7 +987,7 @@ function formatChange(string){
 		//Totals
 		var tm = hh*60+mm; 
 		var ts = tm*60+ss;
-		var tx = ts*100+xx;
+		var tx = ( global.gameType === "tmr") ? ts*1000+xx : ts*100+xx;
 		return tx;
 	}
 	else if ( formatTypeForm[4].checked === true ) //sss.xx
@@ -997,7 +1000,7 @@ function formatChange(string){
         var ss = pint(s[0]); //sss
 		
 		//Totals
-		var tx = ss*100+xx;
+		var tx = ( global.gameType === "tmr") ? ss*1000+xx : ss*100+xx;
 		return tx;		
 	}
 	else if ( formatTypeForm[1].checked === true )	// hh:mm:ss.xxx
@@ -1011,7 +1014,6 @@ function formatChange(string){
 		if ( global.gameType === "tmr" ) { xx = pint(xt.substring(0,3)) } //to get 3 digits for newest title (TM2020)
 		var ss = pint(strings[0]);
 		var hh, mm;
-		console.log(SL);
 		if ( SL === 2 )
 		{
 			mm = pint(stringi[1]);
@@ -1021,14 +1023,18 @@ function formatChange(string){
 			hh = 0;
 			mm = pint(stringi[0]);
 		}
-		else {
+		else if ( SL === 0 ) {
+			hh = 0;
+			mm = 0;
+		}
+		else { 
 			console.log("Problem with string length. SL equal to..."+SL);
 		}
 		
 		//Totals
 		var tm = hh*60+mm; 
 		var ts = tm*60+ss;
-		var tx = ts*100+xx;
+		var tx = ( global.gameType === "tmr") ? ts*1000+xx : ts*100+xx;
 		return tx;		
 	}
 	else {
@@ -1268,7 +1274,7 @@ function Calculation(){
 	document.querySelector('#clipboardZone').value = pass2Clipboard;
 	
 	var pageHigh = document.body.scrollHeight; //read how big (high) page is
-	document.querySelector('body').style.height = pageHigh*1.02; //to apply color for whole height of page...
+	document.querySelector('body').style.height = pageHigh*1.01; //to apply color for whole height of page...
 }
 
 function drawTable(){
