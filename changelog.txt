@@ -1,0 +1,27 @@
+0.4.0 version:
+✓ Added changelog file for history of changes.
+
+0.3.8 version:
+✓ Adjusted calculations to thousand parts of second for newest title. Thanks DarkLink for pointing out.
+✓ Changed to monospace font (Monaco for general, Courier for time text field).
+✓ Reorganized order of games according to popularity (based on number of submissions).
+✓ Fixed minor issues with tracklists and clipboard.
+✓ Added:
+- comparison to your last calculated sum (no checks made if you try same campaign)
+- TM2 titles with link to guide for AutoSplitter on speedrun.com,
+- Training campaign for TM2020,
+- double-click prevention (2 second delay before you can click Calculate again),
+- more tooltips on the page...
+
+0.3.2 version:
+✓ Site remembers your choices now (after clicking Calculate).
+✓ It checks your separator (does not block output).
+✓ Now you can copy to clipboard with distancing (preserving the formatting).
+✓ Fixed problem with one format.
+✓ Added new format support.
+✓ Moved page to new address.
+
+Future plans:
+✗ Option of 'I want to insert times manually' is not yet implemented.
+✗ Option for custom tracklists is not yet implemented.
+✗ More graphical display of webpage and separating titles for subpages (faster access).

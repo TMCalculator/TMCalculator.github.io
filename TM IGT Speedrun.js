@@ -1162,7 +1162,7 @@ function Calculation(){
 	else {
 		Calculations();
 		clicked = true;
-		setTimeout(() => { clicked = false; }, 2000); //after 2 seconds release the block...
+		setTimeout(() => { clicked = false; }, 500); //after 2 seconds release the block...
 	}
 }
 
