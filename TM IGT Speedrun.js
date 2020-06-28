@@ -7,6 +7,15 @@ global["timeFormat"] = "";
 
 function pint(str){return parseInt(str)} //Shortening Parse Int function
 
+var radiotm2 = document.querySelectorAll('.radiotm2');
+(function radioLoop(){
+	for (i = 0; i < radiotm2.length; ++i) {
+	radiotm2[i].addEventListener('click', () => {
+		console.log("forEach worked");
+	  });
+	}
+})();
+
 //Process all radio choices and put it into variables... [?]
 var forms = window.document["forms"];
 function radioBasicAll(){
@@ -30,6 +39,7 @@ function radioBasicAll(){
 		
 		if ( forms[j].name === "gameTypeForm" )
 		{
+			//global.CampType = "";
 			campaignDraw(global.gameType);
 			subCampaignDraw(null);
 			global.SubCampaignType = undefined; //Change this to empty, so it doesn't take category from different group if you were switching games.
@@ -204,7 +214,7 @@ document.querySelector('#calculatorMode > form:nth-child(1) > input:nth-child(2)
 document.querySelector('#calculatorMode > form:nth-child(1) > input:nth-child(3)').addEventListener('click', function(){ toggleTextBox("off") });
 
 function campaigns(type){ //type = gameType
-	if ( type === "tmr" ) { campList = ["2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"] }
+	if ( type === "tmr" ) { campList = ["Training", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"] }
 	if ( type === "turbo" ) { campList = ["Canyon Grand Drift", "Valley Down & Dirty", "Rollercoaster Lagoon", "International Stadium", "All Environments"] }
 	if ( type === "wii" ) { campList = ["Race", "Stadium", "Island", "Desert", "Snow", "Rally", "Coast"] }
 	if ( type === "turbods" ) { campList = ["Race", "Stadium", "Island", "Snow", "Coast", "StadiumPractice"] }
@@ -222,7 +232,8 @@ function subcampaign(type){ //type = campType
 	var c = type;
 	if ( global.gameType === "tmr" ) {
 		if ( c === "2020" ) { subCampList = ["Summer", "Autumn", "Winter"] }
-		if ( c !== "2020" ) { subCampList = ["Spring", "Summer", "Autumn", "Winter"] }
+		if ( c === "Training" ) { subCampList = [true] };
+		if ( c !== "2020" && c !== "Training" ) { subCampList = ["Spring", "Summer", "Autumn", "Winter"] }
 	}
 	
 	if ( global.gameType === "turbo" ) //applies to all campaigns
@@ -259,6 +270,7 @@ function subcampaign(type){ //type = campType
 
 var trackList = {
 	tmr : {
+		training : "Training 01,Training 02,Training 03,Training 04,Training 05,Training 06,Training 07,Training 08,Training 09,Training 10,Training 11,Training 12,Training 13,Training 14,Training 15,Training 16,Training 17,Training 18,Training 19,Training 20,Training 21,Training 22,Training 23,Training 24,Training 25",
 		2020 : {
 			summer : "01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25",
 			autumn : "01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25",
@@ -900,8 +912,8 @@ function formatChange(string){
 
 	if ( formatTypeForm[3].checked === true ) //xxxxx
 	{
-		var sl = string.length;
-		var ld = pint(string.substring(s-1,s)) //Last Digit
+		//var sl = string.length;
+		//var ld = pint(string.substring(s-1,s)) //Last Digit
 		//if ( ld !== "0" || ld !== 0 ) { console.log("Last digit millisecond might be wrong!"); }
 		//no need for change...
 		return string
@@ -941,18 +953,33 @@ function formatChange(string){
 	else if ( formatTypeForm[0].checked === true ) //hhmmssxx
 	{
 		var s = string.length; //e.g. 5-9
-		var xx = pint(string.substring(s-2, s));
-		var ss = pint(string.substring(s-4, s-2));
-		var mm = 0;
-		if ( s > 4 && s <= 6 ) {
-			mm = pint(string.substring(0, s-4));
-		}
-		var hh = 0;
-		if ( s > 6 ) {
-			mm = pint(string.substring(s-6, s-4));
-			hh = pint(string.substring(0, s-6));
+		if ( global.gameType !== "tmr" ) {
+			var xx = pint(string.substring(s-2, s));
+			var ss = pint(string.substring(s-4, s-2));
+			var mm = 0;
+			if ( s > 4 && s <= 6 ) {
+				mm = pint(string.substring(0, s-4));
+			}
+			var hh = 0;
+			if ( s > 6 ) {
+				mm = pint(string.substring(s-6, s-4));
+				hh = pint(string.substring(0, s-6));
+			}
 		}
 		
+		else { //to get 3 digits for newest title (TM2020)
+			var xx = pint(string.substring(s-3, s));
+			var ss = pint(string.substring(s-5, s-3));
+			var mm = 0;
+			if ( s > 5 && s <= 7 ) {
+				mm = pint(string.substring(0, s-5));
+			}
+			var hh = 0;
+			if ( s > 7 ) {
+				mm = pint(string.substring(s-7, s-5));
+				hh = pint(string.substring(0, s-7));
+			}
+		}
 		// console.log(s, xx, ss, mm, hh)
 		//Totals
 		var tm = hh*60+mm; 
@@ -965,6 +992,8 @@ function formatChange(string){
 		var s = string.split('.'); //split data with dot.
         var xt = s[1]; //xxxx
         var xx = pint(xt.substring(0, 2)); //xx (get only two numbers after dot)
+		
+		if ( global.gameType === "tmr" ) { xx = pint(xt.substring(0,3)) } //to get 3 digits for newest title (TM2020)
         var ss = pint(s[0]); //sss
 		
 		//Totals
@@ -979,6 +1008,7 @@ function formatChange(string){
 		
         var xt = strings[1]; //xxxx
         var xx = pint(xt.substring(0, 2)); //xx (get only two numbers after dot)
+		if ( global.gameType === "tmr" ) { xx = pint(xt.substring(0,3)) } //to get 3 digits for newest title (TM2020)
 		var ss = pint(strings[0]);
 		var hh, mm;
 		console.log(SL);
@@ -1010,6 +1040,12 @@ function formatReverse(time, mode){
 	var h2ms = 360000;
 	var m2ms = 6000;
 	var s2ms = 100;
+	if ( global.gameType === "tmr" )
+	{
+		h2ms = 3600000;
+		m2ms = 60000;
+		s2ms = 1000;
+	}
 	
 	//Final...
 	var fh = Math.floor(time / h2ms)
@@ -1025,45 +1061,64 @@ function formatReverse(time, mode){
 		if ( fh.toString().length === 1 ) { fh = "0"+fh }
 		if ( fm.toString().length === 1 ) { fm = "0"+fm }
 		if ( fs.toString().length === 1 ) { fs = "0"+fs }
-		if ( fx.toString().length === 1 ) { fx = "0"+fx }
+		if ( global.gameType === "tmr" ) {
+			if ( fx.toString().length === 1 ) { fx = "00"+fx }
+			else if ( fx.toString().length === 2 ) { fx = "0"+fx }
+			}
+		else if ( fx.toString().length === 1 ) { fx = "0"+fx }
 		if ( mode === "igt" )
 		{
 			formatting = fh+":"+fm+":"+fs+"."+fx;
 		}
+		else if ( global.gameType === "tmr" ) {
+			formatting = fh+"h "+fm+"m "+fs+"s "+fx+"ms"
+		}
 		else { 
-			formatting = fh+"h "+fm+"m "+fs+"s "+fx+"0 ms"
+			formatting = fh+"h "+fm+"m "+fs+"s "+fx+"0ms"
 		}
 	}
 	else if ( fm > 0 )
 	{
 		if ( fm.toString().length === 1 ) { fm = "0"+fm }
 		if ( fs.toString().length === 1 ) { fs = "0"+fs }
-		if ( fx.toString().length === 1 ) { fx = "0"+fx }
+		if ( global.gameType === "tmr" ) {
+			if ( fx.toString().length === 1 ) { fx = "00"+fx }
+			else if ( fx.toString().length === 2 ) { fx = "0"+fx }
+			}
+		else if ( fx.toString().length === 1 ) { fx = "0"+fx }
 		if ( mode === "igt" )
 		{
 			formatting = fm+":"+fs+"."+fx
 		}
+		else if ( global.gameType === "tmr" ) {
+			formatting = fm+"m "+fs+"s "+fx+"ms"
+		}
 		else { 
-			formatting = fm+"m "+fs+"s "+fx+"0 ms"
+			formatting = fm+"m "+fs+"s "+fx+"0ms"
 		}
 	}
 	else
 	{
 		if ( fs.toString().length === 1 ) { fs = "0"+fs }
-		if ( fx.toString().length === 1 ) { fx = "0"+fx }
+		if ( global.gameType === "tmr" ) {
+			if ( fx.toString().length === 1 ) { fx = "00"+fx }
+			else if ( fx.toString().length === 2 ) { fx = "0"+fx }
+			}
+		else if ( fx.toString().length === 1 ) { fx = "0"+fx }
 		if ( mode === "igt" )
 		{
 			formatting = "0:"+fs+"."+fx
 		}
+		else if ( global.gameType === "tmr" ) {
+			formatting = fs+"s "+fx+"ms"
+		}
 		else { 
-			formatting = fs+"s "+fx+"0 ms"
+			formatting = fs+"s "+fx+"0ms"
 		}
 		
 	}
 	return formatting
 }
-
-function tracklist2Array(address){ result = address.split(','); return result }
 
 function hasNumber(myString) {
 	return /\d/.test(myString);
@@ -1098,27 +1153,27 @@ function Calculation(){
 	var subCatExisting = document.querySelector('#subcampaign').children.length
 	saveInputs(subCatExisting); //Puts stuff into memory...
 	separatorCheck();
-	
-	var subCatExist = document.querySelector('#campaign').children.length
+
+	var cateExist = document.querySelector('#campaign').children.length
 	if ( global.CampaignType === undefined ) { alert("You did not choose category!") }
-	if ( global.SubCampaignType === undefined && subCatExist === 2 ) { alert("You did not choose subcategory!") }
+	if ( global.SubCampaignType === undefined && cateExist === 2 ) { alert("You did not choose subcategory!") }
 	 //unify variable to address trakclist object in TL variable
-	global["CamType"] = subType(global.CampaignType);
-	if ( subCatExist === 2 ) {
+	global["CampType"] = subType(global.CampaignType);
+	if ( subCatExisting >= 2 ) {
 		global["SubType"] = subType(global.SubCampaignType);
 	}
 	
 	var TLraw;
-	if ( subCatExist === 2 ) {
-		TLraw = trackList[global.gameType][global["CamType"]][global["SubType"]]; //unformatted tracklist
+	if ( subCatExisting >= 2 ) {
+		TLraw = trackList[global.gameType][global["CampType"]][global["SubType"]]; //unformatted tracklist
 	}
 	else { 
-		if ( trackList[global.gameType][global["CamType"]]["all"] === undefined )
+		if ( trackList[global.gameType][global["CampType"]]["all"] === undefined )
 		{
-			TLraw = trackList[global.gameType][global["CamType"]]
+			TLraw = trackList[global.gameType][global["CampType"]]
 		} 
 		else {
-			TLraw = trackList[global.gameType][global["CamType"]]["all"]
+			TLraw = trackList[global.gameType][global["CampType"]]["all"]
 		}
 	}
 	var TL = TLraw.split(',');
@@ -1139,9 +1194,11 @@ function Calculation(){
 	var timeValues = [];
 	var array2Print = [];
 	//var pass2Clipboard = "Sum_Of_Time,       Track_Time,        Track_Name \n";
-	var pass2Clipboard = "Added_Sum_of_Times,Current_Track_Time,Track_Name\n"
+	//var pass2Clipboard = "Asc._Sum_of_Times,Current_Track_Time,Track_Name\n"
+	var pass2Clipboard = "Ascending TimeSum,CurrentTrack Time,TrackName\n";
 
 	var sumOfTime = 0;
+	var lastSum = localStorage.getItem("lastSum");
 	var leng = rawTimeValues.length;
 	//var lengMinusTrackList = leng-TL.length;
 	// if ( leng === TL.length ) //is okay, number of given times
@@ -1161,33 +1218,57 @@ function Calculation(){
 			
 			array2Print[i] = [];
 			array2Print[i][0] = TL[i]; //trackname
+			//if ( global.gameType === "tmr" ) { array2Print[i][0] = TL[i]+" (of "+global.SubCampaignType+" "+global.CampaignType+")"}
+			//if ( global.gameType === "tmr" ) { array2Print[i][0] = global.CampaignType+" "+global.SubCampaignType+" "+TL[i] }
+			//if ( global.gameType === "tmr" ) { array2Print[i][0] = TL[i]+" "+global.SubCampaignType+" "+global.CampaignType}
+			
 			array2Print[i][1] = rawTimeValues[i]; //tracktime... raw
 			array2Print[i][2] = timeValues[i]+"0"; //tracktime...milliseconds
+			if ( global.gameType === "tmr" ) { array2Print[i][2] = timeValues[i]; } //tracktime...milliseconds 
+			array2Print[i][2] = pint(array2Print[i][2]);
+			
 			array2Print[i][3] = formatReverse(timeValues[i], "igt"); //display data in standard format
+			if ( global.gameType === "tmr" ) { array2Print[i][3] = formatReverse(timeValues[i]) }; //display data in standard format
 			//array2Print[i][5] = formatReverse(timeValues[i]); //display data in standard format
 			array2Print[i][4] = formatReverse(sumOfTime); //tracktime summed up
-			
-			pass2Clipboard += formatReverse(sumOfTime, "full")+","+formatReverse(timeValues[i], "full")+","+array2Print[i][0]+'\n';
-			//console.log(pass2Clipboard)
 			
 			if ( i >= TL.length ) {
 				array2Print[i][0] = "Penalty "+j; //trackname
 				j++;
 			}
+			
+			pass2Clipboard += formatReverse(sumOfTime, "full")+","+formatReverse(timeValues[i], "full")+","+array2Print[i][0]+'\n';
+			//console.log(pass2Clipboard)
 		}
 	}
 	var sumFormatted = formatReverse(sumOfTime);
-	
+	var sumDiff = sumOfTime-lastSum;
+	//var sumDiffFormatted = formatReverse(sumDiff);
+	var a = "-"+formatReverse(-sumDiff);
+	var b = "+"+formatReverse(sumDiff);
+	var c = "no difference";
+	var sumDiffFormatted = ( sumDiff < 0 ) ? a : b;
+	sumDiffFormatted = ( sumDiff === 0 ) ? c : sumDiffFormatted;
 	array2Print.unshift(labels); //Puts labels as first element of Array...
 	
+	localStorage.setItem("lastSum", sumOfTime);
 	document.querySelector('#totalTime').innerText = sumFormatted;
-	createTable(array2Print);
+	document.querySelector('#sumDifference').innerText = " ("+sumDiffFormatted+")";
+	if ( sumDiff < 0 ) { document.querySelector('#sumDifference').style.color = "green" }
+	else if ( sumDiff > 0 ) { document.querySelector('#sumDifference').style.color = "red" }
+	else { document.querySelector('#sumDifference').style.color = "" } 
 	
+	createTable(array2Print);
+	document.querySelector('#fillMe > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(1)').title = "Track name from chosen campaign";
+	document.querySelector('#fillMe > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(2)').title = "Time seen in format as you entered";
+	document.querySelector('#fillMe > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(3)').title = "Time calculated to pure miliseconds (smallest unit to measure)";
+	document.querySelector('#fillMe > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(4)').title = "Time seen as game formats it with colons (:) and dots (.)";
+	document.querySelector('#fillMe > table:nth-child(1) > tbody:nth-child(1) > tr:nth-child(1) > td:nth-child(5)').title = "Time summed up, including current track + all above current track.";
 	
 	document.querySelector('#clipboardZone').value = pass2Clipboard;
 	
 	var pageHigh = document.body.scrollHeight; //read how big (high) page is
-	document.querySelector('body').style.height = pageHigh; //to apply color for whole height of page...
+	document.querySelector('body').style.height = pageHigh*1.02; //to apply color for whole height of page...
 }
 
 function drawTable(){

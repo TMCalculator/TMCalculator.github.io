@@ -8,7 +8,17 @@
 <noscript>You need to enable JavaScript to run this app.</noscript>
 
 <div class="wrapper"><!-- EnterForcedInHTML is &#013; -->
-<div>This is Early Release version: 0.3.3 <p id="changelogtooltip" class="tooltip" title="0.3.2 version:
+<div>This is Early Release version: 0.3.6 <p id="changelogtooltip" class="tooltip" title="0.3.6 version:
+✓ Adjusted calculations to thousand parts of second for newest title. Thanks DarkLink for pointing out.
+✓ Changed to monospace font (Monaco for general, Courier for time text field).
+✓ Fixed minor issues with tracklists and clipboard.
+✓ Added:
+- comparison to your last calculated sum (no checks made if you try same campaign)
+- TM2 titles with link to guide for AutoSplitter on speedrun.com,
+- Training campaign for TM2020,
+- more tooltips on the page...
+
+0.3.2 version:
 ✓ Site remembers your choices now (after clicking Calculate).
 ✓ It checks your separator (does not block output).
 ✓ Now you can copy to clipboard with distancing (preserving the formatting).
@@ -32,7 +42,31 @@ Future plans:
 <STRONG>Pick The Game - TrackMania...</STRONG>
 <form name="gameTypeForm">
 <INPUT TYPE="radio" NAME="gametype" VALUE="tmr">Ⓡ
+<a href="https://www.speedrun.com/tm2stadium/guide/ktact"><INPUT TYPE="radio" NAME="gametype" VALUE="tm2s" class="radiotm2">² Stadium</a>
+<INPUT TYPE="radio" NAME="gametype" VALUE="tmnf">Nations Forever
+<a href="https://www.speedrun.com/tm2stadium/guide/ktact"><INPUT TYPE="radio" NAME="gametype" VALUE="tm2c" class="radiotm2">² Canyon</a>
 <INPUT TYPE="radio" NAME="gametype" VALUE="turbo">Turbo
+<INPUT TYPE="radio" NAME="gametype" VALUE="tmuf">United Forever
+<a href="https://www.speedrun.com/tm2stadium/guide/ktact"><INPUT TYPE="radio" NAME="gametype" VALUE="tm2v" class="radiotm2">² Valley</a>
+<a href="https://www.speedrun.com/tm2stadium/guide/ktact"><INPUT TYPE="radio" NAME="gametype" VALUE="tm2l" class="radiotm2">² Lagoon</a>
+<br>
+<INPUT TYPE="radio" NAME="gametype" VALUE="tmn">Nations ESWC
+<INPUT TYPE="radio" NAME="gametype" VALUE="tmu">United
+<INPUT TYPE="radio" NAME="gametype" VALUE="tmse">Sunrise eXtreme
+<INPUT TYPE="radio" NAME="gametype" VALUE="wii">Wii
+<INPUT TYPE="radio" NAME="gametype" VALUE="tmo">Original
+<INPUT TYPE="radio" NAME="gametype" VALUE="turbods">Turbo: Build to Race
+<INPUT TYPE="radio" NAME="gametype" VALUE="ds">DS
+<INPUT TYPE="radio" NAME="gametype" VALUE="other">Non-Speedrun (Custom Tracklist)
+</form>
+<!--
+<form name="gameTypeForm">
+<INPUT TYPE="radio" NAME="gametype" VALUE="tmr">Ⓡ
+<INPUT TYPE="radio" NAME="gametype" VALUE="tm2l" disabled="true" class="radiotm2">² Lagoon
+<INPUT TYPE="radio" NAME="gametype" VALUE="turbo">Turbo
+<INPUT TYPE="radio" NAME="gametype" VALUE="tm2v" disabled="true" class="radiotm2">² Valley
+<INPUT TYPE="radio" NAME="gametype" VALUE="tm2c" disabled="true" class="radiotm2">² Canyon
+<INPUT TYPE="radio" NAME="gametype" VALUE="tm2s" disabled="true" id="radiotm2">² Stadium
 <INPUT TYPE="radio" NAME="gametype" VALUE="wii">Wii
 <INPUT TYPE="radio" NAME="gametype" VALUE="turbods">Turbo: Build to Race
 <INPUT TYPE="radio" NAME="gametype" VALUE="ds">DS
@@ -44,16 +78,17 @@ Future plans:
 <INPUT TYPE="radio" NAME="gametype" VALUE="tmo">Original
 <INPUT TYPE="radio" NAME="gametype" VALUE="other">Non-Speedrun (Custom Tracklist)
 </form>
+-->
 </div>
 <div id="campaign"><STRONG>Select Speedrun Category...</STRONG> This affects campaigns you will see to choose... (pick game first)</div>
 <div id="subcampaign"><STRONG>Select Subcategory (Campaign)</STRONG> (pick main category first)</div>
 
 <div id="dataFormat">
-<STRONG>Select Formatting of your data (x = hundredths of seconds) </STRONG>
+<STRONG title="Newest game takes in account 3 decimal places (thousand parts of second).">Select Formatting of your data </STRONG>, where <i>x</i> = hundredths of seconds (or thousands for TrackMania Ⓡ).
 <form name="formatTypeForm">
 <INPUT TYPE="radio" NAME="format" VALUE="plainNum" checked="checked">hhmmssxx
 <INPUT TYPE="radio" NAME="format" VALUE="full">hh:mm:ss.xx
-<INPUT TYPE="radio" NAME="format" VALUE="usa">hh<b>h</b>mm'ss"xx
+<INPUT TYPE="radio" NAME="format" VALUE="usa">hh<i><b>h</b></i>mm'ss"xx
 <INPUT TYPE="radio" NAME="format" VALUE="ms">xxxxxx
 <INPUT TYPE="radio" NAME="format" VALUE="secOnly">ssss.xx
 <!--
@@ -77,7 +112,7 @@ Future plans:
 <!--- <p>Click the "Calculate" button to count.</p> -->
 <input id="Cbutton" type="button" class="button" style="background:green;" value="Calculate" onclick="Calculation()"><input id="tableDrawButton" type="button" class="button" value="DrawTable" onclick="drawTable()" style="visibility:hidden;"><input id="clipboardDiv" type="button" class="button" value="Copy to Clipboard" onclick="clipboard()" style="visibility:hidden;">
 <br>
-<div id="totalText">Here is total time: <div id="totalTime" style="display:inline;"></div></div>
+<div id="totalText"><h1>Here is total time: <div id="totalTime" style="display:inline; color:lime"></div><div id="sumDifference" style="display:inline;"></div></h1></div>
 <div id="fillMe">
 </div>
 
