@@ -1,3 +1,14 @@
+Future plans:
+✗ More graphical display of webpage and separating titles for subpages (faster access).
+✗ Option of 'I want to insert times manually' is operational, however it is not COMPLETED fully. Need some fixes.
+
+
+0.5.1 version:
+✓ Changed names for campaings and adjusted TM2020 campaign a bit (it will attach name and year to name of tracks in the table); fixed "R" sign.
+✓ Support of custom tracklist
+✓ Linked autosplitter guide by Rasta -> https://www.youtube.com/watch?v=Aey4ufBPwos
+✓ Initial working sketch for option 'I want to insert times manually'
+
 0.4.0 version:
 ✓ Added changelog file for history of changes.
 
@@ -21,7 +32,3 @@
 ✓ Added new format support.
 ✓ Moved page to new address.
 
-Future plans:
-✗ Option of 'I want to insert times manually' is not yet implemented.
-✗ Option for custom tracklists is not yet implemented.
-✗ More graphical display of webpage and separating titles for subpages (faster access).

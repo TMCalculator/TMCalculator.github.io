@@ -1,0 +1,109 @@
+html *
+{
+   color: #fff !important;
+   font-family: Monaco;
+   font-size: 18px;
+}
+
+body
+{
+	margin: 0px;
+    padding: 0px;
+	background-color: #102030;
+	height: 100%;
+}
+
+td{
+	text-align: right;
+}
+
+a {
+    text-decoration: none !important;
+	font-style: oblique;
+}
+
+.wrapper{
+	margin-left: 16px;
+	width: 100%-16px;
+	height: 100%;
+}
+
+.row{
+	height: 50%;
+}
+
+.column{
+	width: 33%;
+	float: left;
+}
+
+input[type=text] {
+  background-color: #241d1d;
+}
+
+input[type=radio] {
+  margin : 12px;
+}
+
+textarea {
+  background-color: #241d1d;
+  font-family: Courier;
+}
+
+.changelog {
+	font-size:1em;
+}
+
+.flex {
+	width: 40%;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+
+.flexx{
+    -webkit-box-flex: 1 1 auto;
+    -moz-box-flex:  1 1 auto;
+    -webkit-flex:  1 1 auto;
+    -ms-flex:  1 1 auto;
+    flex:  1 1 auto;
+}
+
+/* imitates spacebars */
+.imispaceL{ 
+	margin-left: 0.25em;
+}
+
+ /* imitates spacebars */
+.imispaceR{
+	margin-right: 0.25em;
+}
+
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.h1{
+	white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+	display: block;
+	font-weight: bold;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  font-size: 0.75em;
+}
