@@ -1118,7 +1118,7 @@ function formatReverse(time, mode){
 	var formatting = '';
 	if ( fh > 0 || mode === "full" )
 	{
-		if ( fh.toString().length === 1 && fh === 0 ) { fh = "0"+fh; }
+		if ( fh.toString().length === 1 ) { fh = "0"+fh; }
 		if ( fm.toString().length === 1 ) { fm = "0"+fm; }
 		if ( fs.toString().length === 1 ) { fs = "0"+fs; }
 		if ( global.gameType === "tmr" ) {
